@@ -27,7 +27,7 @@ import excepciones.ErrorS;
 %char //conteo de caracteres
 %full //reconocimiento de caracteres
 %ignorecase //quitar la distincion entre mayusculas y minusculas (case insensitive)
-%debug
+
 
 //estados
 
@@ -140,6 +140,7 @@ DOS_PUNTOS = ":"
     cadena = cadena.replace("\\n", "\n");
     cadena = cadena.replace("\\t","\t");
     cadena = cadena.replace("\\\\","\\");
+    cadena = cadena.replace("\"","'"+"'");
     cadena = cadena.replace("\\'", "'");
     return new Symbol(sym.CADENA, yyline, yycolumn,cadena);
     }

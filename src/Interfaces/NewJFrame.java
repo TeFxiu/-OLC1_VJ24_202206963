@@ -376,14 +376,14 @@ public class NewJFrame extends javax.swing.JFrame {
     }
     public static void crearArchivoHTML(LinkedList lista, String nombreArchivo) {
    
-         String inicioHTML = "<!DOCTYPE html>\n<html>\n<head>\n<title>Errores</title>\n<style>\n" +
+         String inicioHTML = "<!DOCTYPE html>\n<html>\n<head>\n<title>Reportes</title>\n<style>\n" +
                             "body {background-color: black; color: white; font-family: Arial, sans-serif;}\n" +
                             "table {width: 100%; border-collapse: collapse;}\n" +
                             "table, th, td {border: 1px solid black;}\n" +
                             "th, td {padding: 8px; text-align: left;}\n" +
                  "th {background-color: #333;}\n" +
                             "tr:nth-child(even) {background-color: #444;}\n" +
-                            "</style>\n</head>\n<body>\n<h1>Errores</h1>\n<table>\n";
+                            "</style>\n</head>\n<body>\n<h1>Reportes</h1>\n<table>\n";
         String finHTML = "</table>\n</body>\n</html>";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {

@@ -14,6 +14,7 @@
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Nativo.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/OperacionUnitaria.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Fin.java</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Casteo.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Dow.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/AccesoVar.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Interfaces/NewJFrame.java</file>
@@ -30,6 +31,7 @@
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/TablaSimbolos.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/TipoDato.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/scanner.java</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/TipoMutable.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/lexico.jflex</file>
         </group>
     </open-files>
