@@ -1,0 +1,10 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.referencedLibraries": [
+        "c:\\Users\\TeFxiu\\Documents\\NetBeansProjects\\Prueba-Interfaz Compi1\\lib\\java-cup-11b-runtime.jar",
+        "c:\\Users\\TeFxiu\\Documents\\NetBeansProjects\\Prueba-Interfaz Compi1\\lib\\jflex-full-1.9.1.jar",
+        "c:\\Users\\TeFxiu\\Documents\\NetBeansProjects\\Prueba-Interfaz Compi1\\lib\\java-cup-11b.jar"
+    ]
+}

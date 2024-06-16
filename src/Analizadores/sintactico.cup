@@ -1,0 +1,223 @@
+package Analizadores;
+
+//importaciones
+import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+import abstracto.Instruccion;
+import simbolo.Tipo;
+import simbolo.TipoDato;
+import instrucciones.IF;
+import instrucciones.Else;
+import instrucciones.Match;
+import expresiones.Caso;
+import instrucciones.ForC;
+import instrucciones.WhileC;
+//instrucciones
+import instrucciones.Print;
+import instrucciones.AsignacionVar;
+import instrucciones.OperacionUnitaria;
+
+//expresiones
+import expresiones.Nativo;
+import expresiones.Aritmeticas;
+import expresiones.OperadoresAritmeticos;
+import expresiones.OperadoresRelacionales;
+import expresiones.Relacionales;
+import expresiones.Logicos;
+import expresiones.OperadoresLogicos;
+import java.util.LinkedList;
+import excepciones.ErrorS;
+import expresiones.Casteo;
+import instrucciones.Declaracion;
+import expresiones.AccesoVar;
+import expresiones.TipoMutable;
+import instrucciones.Dow;
+import instrucciones.Fin;
+
+// parser
+parser code
+{:
+    scanner s;
+    parser(scanner s){this.s = s;}
+
+    public LinkedList<ErrorS> listaErrores = new LinkedList<>();
+    
+    public void syntax_error(Symbol s){
+        listaErrores.add(new ErrorS("Sintactico R", "No se esperaba el componente"+s.value, s.left, s.right));
+        System.out.println("Error Sintactico en la linea " +
+        (s.left) + " y columna " + (s.right) +
+        ". No se esperaba el componente: " + (s.value) + ".");
+    }
+
+    public void unrecovered_syntax_error (Symbol s){
+listaErrores.add(new ErrorS("Sintactico  NR", "No se esperaba el componente"+s.value, s.left, s.right));
+        System.out.println("Error Sintactico no recuperable en la linea" +
+        (s.left) + " y columna " + (s.right) +
+        ". No se esperaba el componente: " + (s.value) + ".");
+    }
+
+:}
+
+action code
+{:
+:}
+
+//terminales
+terminal String CADENA, ENTERO, DECIMAL, BOOL, CARACTER, ID;
+terminal FINCADENA, IMPRIMIR, VAR, CONST;
+terminal DOS_PUNTOS, IGUAL;
+terminal PAR_A, PAR_C, MAS, MENOS, UMENOS, MULT, MODULO, POTENCIA,DIV;
+terminal IGUALACION, DIFERENCIA, MAYOR_IGUAL, MENOR_IGUAL;
+terminal MENOR, MAYOR;
+terminal OR, AND, XOR,NOT;
+terminal INCREMENTO, DECREMENTO;
+terminal INT, DOUBLE, CHAR, BOOLEAN, STRING;
+terminal IF,ELSE, LLAVE_A, LLAVE_C;
+terminal FORC, WHILEC, DO_C;
+terminal FIN, CONTINUAR;
+terminal DEFAULT, FLECHA, MATCH;
+
+//no terminales
+nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
+nonterminal Instruccion INSTRUCCION;
+nonterminal Instruccion EXPRESION;
+nonterminal Instruccion SENT_IF, BUCLE_IF;
+nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION, OPERACIONU;
+nonterminal TipoMutable MUTABILIDAD;
+nonterminal TipoDato TIPO;
+nonterminal Instruccion FORB,ACTU_FOR, ASIG;
+nonterminal Instruccion CWHILE, DOWHILE;
+nonterminal Instruccion FINB;
+nonterminal Instruccion CMATCH;
+nonterminal LinkedList<Caso> CASOS;
+nonterminal LinkedList<Caso> CASOSE;
+nonterminal LinkedList<Caso> CASOSD;
+
+precedence left OR;
+precedence left AND;
+precedence left XOR;
+precedence right NOT;
+precedence left IGUALACION, DIFERENCIA, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
+precedence left MAS, MENOS;
+precedence left MULT, DIV, MODULO;
+precedence nonassoc POTENCIA;
+precedence left UMENOS;
+
+start with INICIO;
+
+INICIO ::= INSTRUCCIONES:a      {:   RESULT = a;   :}
+;
+
+INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b); :}
+                | INSTRUCCION:a                     {: RESULT = new LinkedList<>(); RESULT.add(a); :}
+;
+
+INSTRUCCION ::=  IMPRESION:a        {:   RESULT = a;   :}
+                |DECLARACION:a      {:   RESULT = a;   :}
+                |ASIGNACION:a       {:   RESULT = a;   :}
+                |OPERACIONU:a       {:   RESULT = a;   :}
+                |SENT_IF:a          {:   RESULT = a;   :}
+                |FORB:a             {: RESULT = a; :}
+                |CWHILE:a           {: RESULT = a; :}
+                |DOWHILE:a          {: RESULT = a; :}
+                |FINB:a             {: RESULT = a; :}
+                |CMATCH:a           {: RESULT = a; :}
+                | error FINCADENA
+;
+
+CMATCH::= MATCH EXPRESION:a LLAVE_A CASOS:b LLAVE_C                             {: RESULT = new Match(a,b,aleft,aright); :}
+;
+
+CASOS ::= EXPRESION:a FLECHA LLAVE_A INSTRUCCIONES:b LLAVE_C CASOS:c            {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,b,aleft,aright)); RESULT.addAll(c); :}
+            |CASOSE:a                                                           {: RESULT =a; :}
+            |CASOSD:a                                                            {: RESULT =a; :}
+;
+
+CASOSD ::= DEFAULT FLECHA LLAVE_A INSTRUCCIONES:a LLAVE_C                        {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,aleft,aright)); :}
+;
+
+CASOSE::= EXPRESION:a FLECHA LLAVE_A INSTRUCCIONES:b LLAVE_C                    {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,b,aleft,aright)); :}
+;
+
+FINB ::= FIN:a FINCADENA                        {: RESULT= new Fin(aleft,aright); :}
+            |CONTINUAR:a FINCADENA              {: RESULT = new Fin(true, aleft, aright);    :}
+;
+
+DOWHILE ::= DO_C LLAVE_A INSTRUCCIONES:a LLAVE_C WHILEC PAR_A EXPRESION:b PAR_C FINCADENA           {: RESULT = new Dow(a,b,aleft,aright); :}
+;
+
+CWHILE ::= WHILEC PAR_A EXPRESION:a PAR_C LLAVE_A INSTRUCCIONES:b LLAVE_C                           {: RESULT = new WhileC(a,b,aleft,aright); :}  
+;
+
+FORB::= FORC PAR_A ASIG:a EXPRESION:b FINCADENA ACTU_FOR:c PAR_C LLAVE_A INSTRUCCIONES:d LLAVE_C    {:RESULT = new ForC(a,b,c,d,aleft,aright);:}
+;
+
+ASIG ::= ASIGNACION:a           {:RESULT = a;:}
+    |DECLARACION:a              {:RESULT = a; :}
+;
+
+ACTU_FOR ::= ID:a IGUAL EXPRESION:b         {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
+            |ID:a INCREMENTO                {: RESULT = new OperacionUnitaria(a,true,aleft,aright); :}
+            |ID:a DECREMENTO                {: RESULT = new OperacionUnitaria(a,false,aleft,aright); :}
+;
+SENT_IF::= IF PAR_A EXPRESION:a PAR_C LLAVE_A INSTRUCCIONES:b LLAVE_C                       {: RESULT = new IF(a, b,aleft,aright); :}
+            |IF PAR_A EXPRESION:a PAR_C LLAVE_A INSTRUCCIONES:b LLAVE_C BUCLE_IF:c          {:RESULT = new IF(a,b,(IF)c, aleft,aright);:}
+            | IF PAR_A EXPRESION:a PAR_C LLAVE_A INSTRUCCIONES:b LLAVE_C ELSE LLAVE_A INSTRUCCIONES:c LLAVE_C   {:RESULT = new IF(a,b, new Else(c,aleft,aright),aleft,aright);:}
+;
+
+BUCLE_IF::= ELSE SENT_IF:a                                                              {:RESULT = a;:}
+;
+
+IMPRESION ::= IMPRIMIR PAR_A EXPRESION:a PAR_C FINCADENA                                {:   RESULT = new Print(a, aleft, aright);   :}
+;
+
+DECLARACION ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c IGUAL EXPRESION:d FINCADENA        {: RESULT =new Declaracion(true,a,b,d,new Tipo(c),aleft,aright); :}
+                |MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c FINCADENA                         {: RESULT = new Declaracion(false,a,b,new Tipo(c),aleft,aright); :}
+;  
+
+ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA         {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
+            |ID:a IGUAL OPERACIONU:b                    {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
+;
+
+OPERACIONU ::= ID:a INCREMENTO FINCADENA                {: RESULT = new OperacionUnitaria(a,true,aleft,aright); :}
+                |ID:a DECREMENTO FINCADENA              {: RESULT = new OperacionUnitaria(a,false,aleft,aright); :}
+;
+
+
+EXPRESION ::= NOT EXPRESION:a                           {:   RESULT = new Logicos(OperadoresLogicos.NOT , a, aleft, aright);   :}
+            | EXPRESION:a XOR EXPRESION:b               {:   RESULT = new Logicos(a, b, OperadoresLogicos.XOR , aleft, aright);   :}
+            | EXPRESION:a AND EXPRESION:b               {:   RESULT = new Logicos(a, b, OperadoresLogicos.AND , aleft, aright);   :}
+            | EXPRESION:a OR EXPRESION:b                {:   RESULT = new Logicos(a, b, OperadoresLogicos.OR , aleft, aright);   :}
+            | EXPRESION:a MENOR EXPRESION:b             {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MENOR , aleft, aright);   :}
+            | EXPRESION:a MAYOR EXPRESION:b             {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYOR , aleft, aright);   :}
+            | EXPRESION:a MENOR_IGUAL EXPRESION:b       {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MENOR_IGUAL , aleft, aright);   :}
+            | EXPRESION:a MAYOR_IGUAL EXPRESION:b       {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYOR_IGUAL , aleft, aright);   :}
+            | EXPRESION:a DIFERENCIA EXPRESION:b        {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.DIFERENCIA, aleft, aright);   :}
+            | EXPRESION:a IGUALACION EXPRESION:b        {:   RESULT = new Relacionales(a, b, OperadoresRelacionales.IGUALACION, aleft, aright);   :}
+            | EXPRESION:a MENOS EXPRESION:b             {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);   :}
+            | EXPRESION:a MAS EXPRESION:b               {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);   :}
+            | EXPRESION:a MODULO EXPRESION:b            {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);   :}
+            | EXPRESION:a POTENCIA EXPRESION:b          {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);   :}
+            | EXPRESION:a DIV EXPRESION:b               {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);   :}
+            | EXPRESION:a MULT EXPRESION:b              {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);   :}
+            | MENOS EXPRESION:a                         {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UMENOS
+            | PAR_A TIPO:a PAR_C EXPRESION:b            {: RESULT = new Casteo(a, b, aleft, aright); :}   %prec UMENOS         
+            | PAR_A EXPRESION:a PAR_C                   {: RESULT=a; :}
+            | ENTERO:a                                  {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright );   :}
+            | DECIMAL:a                                 {:   RESULT = new Nativo(new Double(a), new Tipo(TipoDato.DECIMAL), aleft, aright );   :}
+            | CADENA:a                                  {:   RESULT = new Nativo(a, new Tipo(TipoDato.CADENA), aleft, aright );   :}
+            | BOOL:a                                    {:   RESULT = new Nativo(new Boolean(a), new Tipo(TipoDato.BOOL), aleft, aright );   :}
+            | ID:a                                      {:   RESULT = new AccesoVar(a, aleft, aright );   :}
+            | CARACTER:a                                {:   RESULT = new Nativo(a, new Tipo(TipoDato.CARACTER), aleft, aright );   :}
+;
+
+TIPO::= INT             {:  RESULT = TipoDato.ENTERO;  :}
+        |DOUBLE         {:  RESULT = TipoDato.DECIMAL;  :}
+        |CHAR           {:  RESULT = TipoDato.CARACTER;  :}
+        |STRING         {: RESULT = TipoDato.CADENA; :}
+        |BOOLEAN        {: RESULT = TipoDato.BOOL; :}
+;
+
+MUTABILIDAD ::= VAR         {:  RESULT = TipoMutable.VAR;  :}
+                |CONST      {:  RESULT = TipoMutable.CONST;  :}
+;
