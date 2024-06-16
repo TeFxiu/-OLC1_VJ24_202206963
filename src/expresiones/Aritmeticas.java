@@ -160,10 +160,7 @@ public class Aritmeticas extends Instruccion{
                             return op1.toString() +""+op2;
                         }else{
                         this.tipo.setTipo(TipoDato.CADENA);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        char valorFinal = (char) valor2;
-                        return op1.toString()+"" + valorFinal;
+                        return op1.toString()+"" + op2;
                         }
                     }default -> {
                         return new ErrorS("Semantico", "Suma Erronea(4)", this.linea,this.columna);

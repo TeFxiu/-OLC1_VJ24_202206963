@@ -204,9 +204,9 @@ EXPRESION ::= NOT EXPRESION:a                           {:   RESULT = new Logico
             | PAR_A TIPO:a PAR_C EXPRESION:b            {: RESULT = new Casteo(a, b, aleft, aright); :}   %prec UMENOS         
             | PAR_A EXPRESION:a PAR_C                   {: RESULT=a; :}
             | ENTERO:a                                  {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright );   :}
-            | DECIMAL:a                                 {:   RESULT = new Nativo(new Double(a), new Tipo(TipoDato.DECIMAL), aleft, aright );   :}
+            | DECIMAL:a                                 {:   RESULT = new Nativo(Double.parseDouble(a), new Tipo(TipoDato.DECIMAL), aleft, aright );   :}
             | CADENA:a                                  {:   RESULT = new Nativo(a, new Tipo(TipoDato.CADENA), aleft, aright );   :}
-            | BOOL:a                                    {:   RESULT = new Nativo(new Boolean(a), new Tipo(TipoDato.BOOL), aleft, aright );   :}
+            | BOOL:a                                    {:   RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(TipoDato.BOOL), aleft, aright );   :}
             | ID:a                                      {:   RESULT = new AccesoVar(a, aleft, aright );   :}
             | CARACTER:a                                {:   RESULT = new Nativo(a, new Tipo(TipoDato.CARACTER), aleft, aright );   :}
 ;
