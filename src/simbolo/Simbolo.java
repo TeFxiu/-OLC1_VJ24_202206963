@@ -15,8 +15,10 @@ public class Simbolo {
     private TipoMutable mutabilidad;
     private String id;
     private Object valor;
+    private TipoEDD edd;
     public int linea;
     public int columna;
+    public int indiceMax;
 
     public Simbolo(Tipo tipo, TipoMutable mutabilidad, String id, int linea, int columna) {
         this.tipo = tipo;
@@ -24,6 +26,7 @@ public class Simbolo {
         this.id = id;
         this.linea = linea;
         this.columna = columna;
+        this.edd = TipoEDD.NON;
     }
 
     public Simbolo(Tipo tipo, TipoMutable mutabilidad, String id, Object valor, int linea, int columna) {
@@ -33,10 +36,28 @@ public class Simbolo {
         this.valor = valor;
         this.linea = linea;
         this.columna = columna;
+        this.edd = TipoEDD.NON;
+    }
+
+    public Simbolo(TipoEDD edd, Tipo tipo, TipoMutable mutabilidad, String id, Object valor, int linea, int columna, int indiceMax) {
+        this.tipo = tipo;
+        this.mutabilidad = mutabilidad;
+        this.id = id;
+        this.valor = valor;
+        this.linea = linea;
+        this.columna = columna;
+        this.indiceMax = indiceMax;
+        this.edd = edd;
+    }
+
+    public int getIndiceMax() {
+        return indiceMax;
+    }
+
+    public void setIndiceMax(int indiceMax) {
+        this.indiceMax = indiceMax;
     }
     
-
-  
     public void valoresIniciales(){
         switch(tipo.getTipo()){
             case TipoDato.ENTERO ->{
@@ -84,8 +105,5 @@ public class Simbolo {
     public void setValor(Object valor) {
         this.valor = valor;
     }
-    
-    
-    
     
 }

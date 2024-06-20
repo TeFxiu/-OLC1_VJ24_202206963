@@ -51,12 +51,10 @@ public class ForC extends Instruccion{
         if (this.condicion.tipo.getTipo() != TipoDato.BOOL){
             return new ErrorS("Semantico", "La condicion debe ser un boolean", this.linea, this.columna);
         }
-        var newTabla2 = new TablaSimbolos(newTabla);
-        newTabla2.setNombre("For");
         while((boolean) this.condicion.interpretar(arbol, newTabla)){
 
             for(var i : this.instrucciones){
-                var result = i.interpretar(arbol, newTabla2);
+                var result = i.interpretar(arbol, newTabla);
                 if (result instanceof Fin  ){
                     Fin aux = (Fin)result;
                     if(aux.isEstado() == true){
@@ -70,7 +68,7 @@ public class ForC extends Instruccion{
                 return act;
             }
         }
-        global.add(newTabla2);
+        global.add(newTabla);
         return null;
     }
     

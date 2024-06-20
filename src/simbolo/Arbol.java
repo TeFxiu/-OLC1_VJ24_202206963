@@ -7,6 +7,7 @@ package simbolo;
 import abstracto.Instruccion;
 import java.util.LinkedList;
 import excepciones.ErrorS;
+import instrucciones.Metodo;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Arbol {
     private String consola;
     private TablaSimbolos tablaGlobal;
     private LinkedList<ErrorS> errores;
+    private LinkedList<Instruccion> funciones;
 
     public Arbol(LinkedList<Instruccion> instrucciones) {
         this.instrucciones = instrucciones;
@@ -25,8 +27,18 @@ public class Arbol {
         this.tablaGlobal = new TablaSimbolos();
         this.errores = new LinkedList<>();
         this.global = new LinkedList<>();
+        this.funciones = new LinkedList<>();
     }
 
+    public LinkedList<Instruccion> getFunciones() {
+        return funciones;
+    }
+
+    public void setFunciones(LinkedList<Instruccion> funciones) {
+        this.funciones = funciones;
+    }
+
+    
     public LinkedList<Instruccion> getInstrucciones() {
         return instrucciones;
     }
@@ -61,6 +73,21 @@ public class Arbol {
     
     public void Print(String valor){
         consola += valor + "\n";
+    }
+    
+    public void addFunciones(Instruccion funcion){
+        this.funciones.add(funcion);
+    }
+    
+    public Instruccion getFuncion(String id){
+        for(var i : funciones){
+            if (i instanceof Metodo metodo){
+                if (metodo.id.equalsIgnoreCase(id)){
+                    return i;
+                }
+            }
+        }
+        return null;
     }
     
 }

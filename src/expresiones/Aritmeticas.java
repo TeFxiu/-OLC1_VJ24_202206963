@@ -11,7 +11,6 @@ import simbolo.TablaSimbolos;
 import simbolo.Tipo;
 import simbolo.TipoDato;
 import excepciones.ErrorS;
-import instrucciones.AsignacionVar;
 
 /**
  *
@@ -89,15 +88,8 @@ public class Aritmeticas extends Instruccion{
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (int) op1 + (double) op2;
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.ENTERO);
-                            return (int) op1 + (int)((char)op2);
-                        }else{
                         this.tipo.setTipo(TipoDato.ENTERO);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1+ valor2;
-                        }
+                        return (int)op1+ (int)((char)op2);
                     }case TipoDato.CADENA -> {
                         this.tipo.setTipo(TipoDato.CADENA);
                         return op1.toString() + op2.toString();
@@ -115,15 +107,8 @@ public class Aritmeticas extends Instruccion{
                     this.tipo.setTipo(TipoDato.DECIMAL);
                     return (double) op1 + (double) op2;
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.DECIMAL);
-                            return (double) op1 + (int)((char)op2);
-                        }else{
-                        this.tipo.setTipo(TipoDato.DECIMAL);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1+ valor2;
-                        }
+                        this.tipo.setTipo(TipoDato.DECIMAL);    
+                        return (double) op1 + (int)((char)op2);
                     }case TipoDato.CADENA->{
                     this.tipo.setTipo(TipoDato.CADENA);
                     return op1.toString() +  op2.toString();
@@ -155,49 +140,27 @@ public class Aritmeticas extends Instruccion{
                         this.tipo.setTipo(TipoDato.CADENA);
                         return op1.toString() + op2.toString();
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.CADENA);
-                            return op1.toString() +""+op2;
-                        }else{
                         this.tipo.setTipo(TipoDato.CADENA);
-                        return op1.toString()+"" + op2;
-                        }
+                        return op1.toString()+"" + (char)op2;
                     }default -> {
                         return new ErrorS("Semantico", "Suma Erronea(4)", this.linea,this.columna);
                     }
                 
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operando1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operando1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO->{
                         this.tipo.setTipo(TipoDato.ENTERO);
-                        return valor1 + (int)op2;
+                        return (int)((char)op1) + (int)op2;
                     }case TipoDato.DECIMAL->{
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        return valor1+(double)op2;
+                        return (int)((char)op1)+(double)op2;
                     }case TipoDato.CADENA->{
                         this.tipo.setTipo(TipoDato.CADENA);
-                        char valorFinal1 = (char) valor1;
-                        return valorFinal1 + ""+op2.toString();
+                        return (char)op1 + ""+op2.toString();
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.CADENA);
-                            return  (char)valor1 + ""+(char)op2;
-                        }else{
                         this.tipo.setTipo(TipoDato.CADENA);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        char valorFinal2 = (char) valor2;
-                        char valorFinal1 = (char) valor1;
-                        return valorFinal1+"" + valorFinal2 ;
-                        }
+                        return (char)op1+"" + (char)op2 ;
                     }default -> {
                         return new ErrorS("Semantico", "Suma Erronea(5)", this.linea,this.columna);
                     }
@@ -237,15 +200,8 @@ public class Aritmeticas extends Instruccion{
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (int) op1 - (double)op2; 
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.ENTERO);
-                            return (int) op1 - (int)((char)op2);
-                        }else{
                         this.tipo.setTipo(TipoDato.ENTERO);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1- valor2;
-                        }
+                        return (int)op1- (int)((char)op2);
                     }
                     default ->{
                         return new ErrorS("Semantico", "Resta Erronea(1)", this.linea,this.columna);
@@ -260,15 +216,9 @@ public class Aritmeticas extends Instruccion{
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (double) op1 - (double)op2; 
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.DECIMAL);
-                            return (double) op1 - (int)((char)op2);
-                        }else{
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1- valor2;
-                        }
+                        return (double)op1- (int)((char)op2);
+                        
                     }
                     default ->{
                         return new ErrorS("Semantico", "Resta Erronea(2)", this.linea,this.columna);
@@ -276,20 +226,13 @@ public class Aritmeticas extends Instruccion{
                 } 
             
             }case TipoDato.CARACTER->{
-                int valor1;
-                if(operando1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operando1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO->{    
                         this.tipo.setTipo(TipoDato.ENTERO);
-                        return valor1 - (int)op2;
+                        return (int)((char)op1) - (int)op2;
                     }case TipoDato.DECIMAL->{    
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        return (double)(valor1 - (double)op2);
+                        return (int)((char)op1) - (double)op2;
                     }default ->{
                         return new ErrorS("Semantico", "Resta Erronea(3)", this.linea,this.columna);
                     }
@@ -313,15 +256,9 @@ public class Aritmeticas extends Instruccion{
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (int) op1 * (double)op2; 
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.ENTERO);
-                            return (int) op1 * (int)((char)op2);
-                        }else{
                         this.tipo.setTipo(TipoDato.ENTERO);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1* valor2;
-                        }
+                        var resultado = (int) op1 * (int)((char)op2);
+                        return (int) resultado;
                     }
                     default ->{
                         return new ErrorS("Semantico", "Multiplicacion Erronea(1)", this.linea,this.columna);
@@ -336,15 +273,8 @@ public class Aritmeticas extends Instruccion{
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (double) op1 * (double)op2; 
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.DECIMAL);
-                            return (double) op1 * (int)((char)op2);
-                        }else{
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1* valor2;
-                        }
+                        return (double) op1 * (int)((char)op2);
                     }
                     default ->{
                         return new ErrorS("Semantico", "Multiplicacion Erronea(2)", this.linea,this.columna);
@@ -352,20 +282,14 @@ public class Aritmeticas extends Instruccion{
                 } 
             
             }case TipoDato.CARACTER->{
-                int valor1;
-                if(operando1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operando1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO->{    
                         this.tipo.setTipo(TipoDato.ENTERO);
-                        return valor1 * (int)op2;
+                        var resultado = (int)((char)op1) * (int)op2;
+                        return (int)resultado;
                     }case TipoDato.DECIMAL->{    
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        return valor1 * (double)op2;
+                        return (int)((char)op1) * (double)op2;
                     }default ->{
                         return new ErrorS("Semantico", "Multiplicacion Erronea(3)", this.linea,this.columna);
                     }
@@ -377,7 +301,6 @@ public class Aritmeticas extends Instruccion{
     }
     public Object division(Object op1, Object op2){
         try{
-        
         var tipo1 = this.operando1.tipo.getTipo();
         var tipo2 = this.operando2.tipo.getTipo();
         
@@ -385,23 +308,14 @@ public class Aritmeticas extends Instruccion{
             case TipoDato.ENTERO->{
                 switch (tipo2){
                     case TipoDato.ENTERO->{
-                    
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (double)((int) op1 / (int)op2);
                     }case TipoDato.DECIMAL -> {
-                        
                         this.tipo.setTipo(TipoDato.DECIMAL);
                         return (int) op1 / (double)op2;
                     }case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
-                            this.tipo.setTipo(TipoDato.DECIMAL);
-                            return (double)((int) op1 / (int)((char)op2));
-                        }else{
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)((int)op1/ valor2);
-                        }
+                         return (double)((int) op1 / (int)((char)op2));
                     }
                     default ->{
                         return new ErrorS("Semantico", "Division Erronea(1)", this.linea,this.columna);
@@ -420,34 +334,20 @@ public class Aritmeticas extends Instruccion{
                 
                     }
                     case TipoDato.CARACTER->{
-                        if(operando2 instanceof AccesoVar){
                             this.tipo.setTipo(TipoDato.DECIMAL);
                             return (double) op1 / (int)((char)op2);
-                        }else{
-                        this.tipo.setTipo(TipoDato.DECIMAL);
-                        Nativo op_2 = (Nativo)this.operando2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1/ valor2;
-                        }
                     }default ->{
                         return new ErrorS("Semantico", "Division Erronea(2)", this.linea,this.columna);
                     }
                 }
             }case TipoDato.CARACTER->{
-                int valor1;
-                if(operando1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operando1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO->{    
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        return (double)(valor1 / (int)op2);
+                        return (double)((int)((char)op1) / (int)op2);
                     }case TipoDato.DECIMAL->{    
                         this.tipo.setTipo(TipoDato.DECIMAL);
-                        return valor1 / (double)op2;
+                        return (int)((char)op1) / (double)op2;
                     }default ->{
                         return new ErrorS("Semantico", "Division Erronea(3)", this.linea,this.columna);
                     }

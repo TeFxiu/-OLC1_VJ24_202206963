@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package simbolo;
 import java.util.HashMap;
 /**
@@ -24,8 +20,6 @@ public class TablaSimbolos {
         this.nombre = "";
     }
     
-    
-
     public TablaSimbolos getTablaAnterior() {
         return tablaAnterior;
     }
@@ -58,6 +52,7 @@ public class TablaSimbolos {
             this.tablaActual.put(simbolo.getId().toLowerCase(), simbolo);
             return true;
         }else{
+            tablaActual.replace(simbolo.getId().toLowerCase(), simbolo);
             return false;
         }
         

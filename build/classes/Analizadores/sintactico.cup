@@ -2,7 +2,6 @@ package Analizadores;
 
 //importaciones
 import java_cup.runtime.Symbol;
-import java.util.LinkedList;
 import abstracto.Instruccion;
 import simbolo.Tipo;
 import simbolo.TipoDato;
@@ -17,7 +16,6 @@ import instrucciones.Print;
 import instrucciones.AsignacionVar;
 import instrucciones.OperacionUnitaria;
 
-//expresiones
 import expresiones.Nativo;
 import expresiones.Aritmeticas;
 import expresiones.OperadoresAritmeticos;
@@ -33,6 +31,11 @@ import expresiones.AccesoVar;
 import expresiones.TipoMutable;
 import instrucciones.Dow;
 import instrucciones.Fin;
+import instrucciones.Vector;
+import expresiones.AccesoVec;
+import instrucciones.Metodo;
+import instrucciones.AsignarVec;
+import simbolo.TipoEDD;
 
 // parser
 parser code
@@ -50,7 +53,7 @@ parser code
     }
 
     public void unrecovered_syntax_error (Symbol s){
-listaErrores.add(new ErrorS("Sintactico  NR", "No se esperaba el componente"+s.value, s.left, s.right));
+        listaErrores.add(new ErrorS("Sintactico  NR", "No se esperaba el componente"+s.value, s.left, s.right));
         System.out.println("Error Sintactico no recuperable en la linea" +
         (s.left) + " y columna " + (s.right) +
         ". No se esperaba el componente: " + (s.value) + ".");
@@ -76,6 +79,8 @@ terminal IF,ELSE, LLAVE_A, LLAVE_C;
 terminal FORC, WHILEC, DO_C;
 terminal FIN, CONTINUAR;
 terminal DEFAULT, FLECHA, MATCH;
+terminal BRACKET_A, BRACKET_C, BRACKETS, COMA;
+terminal TVOID;
 
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -92,6 +97,10 @@ nonterminal Instruccion CMATCH;
 nonterminal LinkedList<Caso> CASOS;
 nonterminal LinkedList<Caso> CASOSE;
 nonterminal LinkedList<Caso> CASOSD;
+nonterminal Instruccion VECTORES, ASIGNACIONV; 
+nonterminal LinkedList<Instruccion> VALORES, BRACK;
+nonterminal LinkedList<LinkedList> BRACK2D;
+nonterminal Instruccion METODO;
 
 precedence left OR;
 precedence left AND;
@@ -115,6 +124,7 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b)
 INSTRUCCION ::=  IMPRESION:a        {:   RESULT = a;   :}
                 |DECLARACION:a      {:   RESULT = a;   :}
                 |ASIGNACION:a       {:   RESULT = a;   :}
+                |ASIGNACIONV:a      {: RESULT = a; :}
                 |OPERACIONU:a       {:   RESULT = a;   :}
                 |SENT_IF:a          {:   RESULT = a;   :}
                 |FORB:a             {: RESULT = a; :}
@@ -122,7 +132,31 @@ INSTRUCCION ::=  IMPRESION:a        {:   RESULT = a;   :}
                 |DOWHILE:a          {: RESULT = a; :}
                 |FINB:a             {: RESULT = a; :}
                 |CMATCH:a           {: RESULT = a; :}
+                |VECTORES:a         {: RESULT =a;  :}
+                |METODO:a           {: RESULT =a;:}
                 | error FINCADENA
+;
+
+
+METODO ::= TIPO:a ID:b PAR_A PAR_C LLAVE_A INSTRUCCIONES:c LLAVE_C {:RESULT = new Metodo(b,c,new Tipo(a), aleft, aright ); :}
+;
+
+ASIGNACIONV ::= ID:a BRACKET_A EXPRESION:b BRACKET_C IGUAL EXPRESION:c FINCADENA         {: RESULT = new AsignarVec(a,b,c,aleft,aright);:}
+;
+
+VALORES ::= EXPRESION:a COMA VALORES:b                {:  RESULT = b; RESULT.add(a);   :}
+            |EXPRESION:a                              {: RESULT = new LinkedList<>(); RESULT.add(a);  :}
+;
+
+BRACK ::= BRACKET_A VALORES:a BRACKET_C               {: RESULT = a; :}
+;
+
+BRACK2D ::= BRACK:a COMA BRACK2D:b                      {: RESULT = b; RESULT.add(a); :}
+        |BRACK:a                                      {: RESULT =new LinkedList<>(); RESULT.add(a); :}
+;
+
+VECTORES ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c BRACKETS IGUAL BRACK:d FINCADENA    {: RESULT = new Vector(TipoEDD.VECTOR,a, b, d, new Tipo(c), aleft,aright); :}
+            |MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c BRACKETS BRACKETS IGUAL BRACKET_A BRACK2D:d BRACKET_C FINCADENA {: RESULT = new Vector(a, b, d,TipoEDD.VECTOR2D, new Tipo(c), aleft,aright); :}
 ;
 
 CMATCH::= MATCH EXPRESION:a LLAVE_A CASOS:b LLAVE_C                             {: RESULT = new Match(a,b,aleft,aright); :}
@@ -208,6 +242,7 @@ EXPRESION ::= NOT EXPRESION:a                           {:   RESULT = new Logico
             | CADENA:a                                  {:   RESULT = new Nativo(a, new Tipo(TipoDato.CADENA), aleft, aright );   :}
             | BOOL:a                                    {:   RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(TipoDato.BOOL), aleft, aright );   :}
             | ID:a                                      {:   RESULT = new AccesoVar(a, aleft, aright );   :}
+            | ID:a BRACKET_A EXPRESION:b BRACKET_C       {:   RESULT = new AccesoVec(a, b,aleft, aright );   :}
             | CARACTER:a                                {:   RESULT = new Nativo(a, new Tipo(TipoDato.CARACTER), aleft, aright );   :}
 ;
 
@@ -216,6 +251,7 @@ TIPO::= INT             {:  RESULT = TipoDato.ENTERO;  :}
         |CHAR           {:  RESULT = TipoDato.CARACTER;  :}
         |STRING         {: RESULT = TipoDato.CADENA; :}
         |BOOLEAN        {: RESULT = TipoDato.BOOL; :}
+        |TVOID           {:RESULT = TipoDato.VOID;:}
 ;
 
 MUTABILIDAD ::= VAR         {:  RESULT = TipoMutable.VAR;  :}

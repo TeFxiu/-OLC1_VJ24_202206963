@@ -43,14 +43,9 @@ public class Casteo extends Instruccion{
                         this.tipo.setTipo(TipoDato.ENTERO);
                         return (int)((double)op1);
                     }case TipoDato.CARACTER->{
-                        if(operacion instanceof AccesoVar){
                             this.tipo.setTipo(TipoDato.ENTERO);
                             int retorno = (int)((char)op1);
                             return retorno;
-                        }
-                        this.tipo.setTipo(TipoDato.ENTERO);
-                        Nativo nat = (Nativo) operacion;
-                        return nat.convertirChar();
                     }default -> {
                         return new ErrorS("SEMANTICO", "Tipos no compatibles para el casteo(1)", this.linea, this.columna);
                     }
@@ -60,12 +55,8 @@ public class Casteo extends Instruccion{
                     case TipoDato.ENTERO ->{
                         return (double)((int)op1);
                     }case TipoDato.CARACTER->{
-                        if(operacion instanceof AccesoVar){
                             int retorno = (int)((char)op1);
                             return (double)retorno;
-                        }
-                        Nativo nat = (Nativo) operacion;
-                        return (double)nat.convertirChar();
                     }default -> {
                         return new ErrorS("SEMANTICO", "Tipos no compatibles para el casteo(2)", this.linea, this.columna);
                     }
@@ -73,11 +64,8 @@ public class Casteo extends Instruccion{
             }case TipoDato.CARACTER->{
                 this.tipo.setTipo(TipoDato.CARACTER);
                 if (tipoCasteando == TipoDato.ENTERO){
-                    if(operacion instanceof AccesoVar){
                             this.tipo.setTipo(TipoDato.CARACTER);
                             return (char)((int)op1);
-                        }
-                    return (char)((int)op1);
                 }else{
                     return new ErrorS("SEMANTICO", "Tipos no compatibles para el casteo(3)", this.linea, this.columna);
                 }

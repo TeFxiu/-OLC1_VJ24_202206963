@@ -11,7 +11,6 @@ import simbolo.Arbol;
 import simbolo.Simbolo;
 import simbolo.TablaSimbolos;
 import simbolo.Tipo;
-import simbolo.TipoDato;
 
 /**
  *

@@ -72,13 +72,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (int)op1 == (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (int) op1 == (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 == valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Entero no es igual a " + op2.toString(), this.linea, this.columna);
                     }
@@ -91,13 +85,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (double)op1 == (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (double) op1 == (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1 == valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Decimal no es igual a "+op2.toString(), this.linea, this.columna);
                     }
@@ -121,27 +109,14 @@ public class Relacionales extends Instruccion {
                     }
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operacion1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operacion1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO ->{
-                        return valor1 == (int) op2;
+                        return (int)((char)op1) == (int) op2;
                     }case TipoDato.DECIMAL -> {
-                        return valor1 == (double) op2;
+                        return (int)((char)op1) == (double) op2;
                     }
                     case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 == (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 == valor2;
-                        }
+                            return (int)((char)op1) == (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Caracter no es igual "+op2.toString(), this.linea, this.columna);
                     }
@@ -165,13 +140,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (int)op1 != (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 != (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 != valor2;
-                        }
+                        return (int) op1 != (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Entero no es diferente a " + op2.toString(), this.linea, this.columna);
                     }
@@ -184,13 +153,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (double)op1 != (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (double) op1 != (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1 != valor2;
-                        }
+                        return (double) op1 != (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Decimal no es diferente a "+op2.toString(), this.linea, this.columna);
                     }
@@ -214,27 +177,14 @@ public class Relacionales extends Instruccion {
                     }
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operacion1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operacion1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO ->{
-                        return valor1 != (int) op2;
+                        return (int)((char)op1) != (int) op2;
                     }case TipoDato.DECIMAL -> {
-                        return valor1 != (double) op2;
+                        return (int)((char)op1) != (double) op2;
                     }
                     case TipoDato.CARACTER -> {
-                       if(operacion2 instanceof AccesoVar){
-                            return (int) op1 != (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 != valor2;
-                        }
+                        return (int)((char)op1) != (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Caracter no es difetene a "+op2.toString(), this.linea, this.columna);
                     }
@@ -258,13 +208,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (int)op1 < (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (int) op1 < (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 < valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Entero no es menor a " + op2.toString(), this.linea, this.columna);
                     }
@@ -277,13 +221,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (double)op1 < (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (double) op1 < (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1 < valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Decimal no es menor a " + op2.toString(), this.linea, this.columna);
                     }
@@ -311,27 +249,14 @@ public class Relacionales extends Instruccion {
                     }
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operacion1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operacion1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO ->{
-                        return valor1 < (int) op2;
+                        return (int)((char)op1) < (int) op2;
                     }case TipoDato.DECIMAL -> {
-                        return valor1 < (double) op2;
+                        return (int)((char)op1) < (double) op2;
                     }
                     case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 < (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 < valor2;
-                        }
+                            return (int)((char)op1) < (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Caracter no es menor a "+op2.toString(), this.linea, this.columna);
                     }
@@ -365,13 +290,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (int)op1 > (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (int) op1 > (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 > valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Entero no es mayor a " + op2.toString(), this.linea, this.columna);
                     }
@@ -384,13 +303,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (double)op1 > (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (double) op1 > (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1 > valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Decimal no es mayor a " + op2.toString(), this.linea, this.columna);
                     }
@@ -418,27 +331,14 @@ public class Relacionales extends Instruccion {
                     }
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operacion1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operacion1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO ->{
-                        return valor1 > (int) op2;
+                        return (int)((char)op1) > (int) op2;
                     }case TipoDato.DECIMAL -> {
-                        return valor1 > (double) op2;
+                        return (int)((char)op1) > (double) op2;
                     }
                     case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 > (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 > valor2;
-                        }
+                            return (int)((char)op1) > (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Caracter no es mayor a "+op2.toString(), this.linea, this.columna);
                     }
@@ -472,13 +372,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (int)op1 <= (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 <= (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 <= valor2;
-                        }
+                            return (int)op1 <= (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Entero no es menor o igual a " + op2.toString(), this.linea, this.columna);
                     }
@@ -491,13 +385,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (double)op1 <= (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (double) op1 <= (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1 <= valor2;
-                        }
+                            return (double)op1 <= (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Decimal no es menor o igual a " + op2.toString(), this.linea, this.columna);
                     }
@@ -525,27 +413,14 @@ public class Relacionales extends Instruccion {
                     }
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operacion1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operacion1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO ->{
-                        return valor1 <= (int) op2;
+                        return (int)((char)op1) <= (int) op2;
                     }case TipoDato.DECIMAL -> {
-                        return valor1 <= (double) op2;
+                        return (int)((char)op1) <= (double) op2;
                     }
                     case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 <= (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 <= valor2;
-                        }
+                        return (int)((char)op1) <= (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Caracter no es menor o igual a "+op2.toString(), this.linea, this.columna);
                     }
@@ -579,13 +454,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (int)op1 >= (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 >= (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 >= valor2;
-                        }
+                        return (int) op1 >= (int)((char)op2);    
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Entero no es mayor o igual a " + op2.toString(), this.linea, this.columna);
                     }
@@ -598,13 +467,7 @@ public class Relacionales extends Instruccion {
                     case TipoDato.DECIMAL->{
                         return (double)op1 >= (double)op2;
                     }case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
                             return (double) op1 >= (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (double)op1 >= valor2;
-                        }
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Decimal no es mayor o igual a " + op2.toString(), this.linea, this.columna);
                     }
@@ -632,27 +495,14 @@ public class Relacionales extends Instruccion {
                     }
                 }
             }case TipoDato.CARACTER -> {
-                int valor1;
-                if(operacion1 instanceof AccesoVar){
-                    valor1 = (int)((char)op1);
-                }else{
-                Nativo op_1 = (Nativo)this.operacion1;
-                valor1 = op_1.convertirChar();
-                }
                 switch (tipo2){
                     case TipoDato.ENTERO ->{
-                        return valor1 >= (int) op2;
+                        return (int)((char)op1) >= (int) op2;
                     }case TipoDato.DECIMAL -> {
-                        return valor1 >= (double) op2;
+                        return (int)((char)op1) >= (double) op2;
                     }
                     case TipoDato.CARACTER -> {
-                        if(operacion2 instanceof AccesoVar){
-                            return (int) op1 >= (int)((char)op2);
-                        }else{
-                        Nativo op_2 = (Nativo)this.operacion2;
-                        int valor2 = op_2.convertirChar();
-                        return (int)op1 >= valor2;
-                        }
+                            return (int)((char)op1) >= (int)((char)op2);
                     }default -> {
                         return new excepciones.ErrorS("SEMANTICO", "Caracter no es mayor o igual a "+op2.toString(), this.linea, this.columna);
                     }

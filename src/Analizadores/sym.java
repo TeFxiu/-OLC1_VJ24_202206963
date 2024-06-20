@@ -11,6 +11,7 @@ public class sym {
   public static final int DIFERENCIA = 24;
   public static final int DO_C = 46;
   public static final int MULT = 19;
+  public static final int BRACKETS = 54;
   public static final int CHAR = 37;
   public static final int CONST = 11;
   public static final int IGUALACION = 23;
@@ -44,12 +45,16 @@ public class sym {
   public static final int DECIMAL = 4;
   public static final int DECREMENTO = 34;
   public static final int error = 1;
+  public static final int COMA = 55;
   public static final int CADENA = 2;
   public static final int MODULO = 20;
   public static final int MENOS = 17;
   public static final int MENOR = 27;
   public static final int PAR_C = 15;
   public static final int PAR_A = 14;
+  public static final int TVOID = 56;
+  public static final int BRACKET_C = 53;
+  public static final int BRACKET_A = 52;
   public static final int MAYOR = 28;
   public static final int POTENCIA = 21;
   public static final int FLECHA = 50;
@@ -112,7 +117,12 @@ public class sym {
   "CONTINUAR",
   "DEFAULT",
   "FLECHA",
-  "MATCH"
+  "MATCH",
+  "BRACKET_A",
+  "BRACKET_C",
+  "BRACKETS",
+  "COMA",
+  "TVOID"
   };
 }
 

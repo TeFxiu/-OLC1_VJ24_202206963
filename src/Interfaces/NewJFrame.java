@@ -4,6 +4,11 @@ import Analizadores.parser;
 import Analizadores.scanner;
 import abstracto.Instruccion;
 import excepciones.ErrorS;
+import instrucciones.AsignacionVar;
+import instrucciones.AsignarVec;
+import instrucciones.Declaracion;
+import instrucciones.Metodo;
+import instrucciones.Vector;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -311,14 +316,41 @@ public class NewJFrame extends javax.swing.JFrame {
             var tabla = new TablaSimbolos();
             tabla.setNombre("GLOBAL");
             ast.setConsola("");
+            ast.setTablaGlobal(tabla);
             LinkedList<ErrorS> lista = new LinkedList<>();
             lista.addAll(s.listaErrores);
             lista.addAll(p.listaErrores);
+            
             for (var a : ast.getInstrucciones()) {
                 if (a == null) {
                     continue;
                 }
 
+                if (a instanceof Declaracion || a instanceof AsignacionVar) {
+                    var res = a.interpretar(ast, tabla);
+                    if (res instanceof ErrorS errores) {
+                        lista.add(errores);
+                    }
+                }
+
+            }
+            
+            
+            for (var a : ast.getInstrucciones()) {
+                if (a == null) {
+                    continue;
+                }
+
+                if (a instanceof Metodo) {
+                    ast.addFunciones(a);
+                }
+            }
+            
+            for (var a : ast.getInstrucciones()) {
+                if (a instanceof Metodo){
+                    ast.addFunciones(a);
+                }
+                
                 var res = a.interpretar(ast, tabla);
                 if (res instanceof ErrorS) {
                     lista.add((ErrorS) res);

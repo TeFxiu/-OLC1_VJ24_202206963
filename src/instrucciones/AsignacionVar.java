@@ -31,12 +31,8 @@ public class AsignacionVar extends Instruccion{
     
     @Override
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
-        
         var variable = (Simbolo) tabla.getVariable(id);
-        
-        
         if (variable ==  null){
-            
             return new ErrorS("Semantico", "Variable inexistente", this.linea, this.columna);
         }
         
