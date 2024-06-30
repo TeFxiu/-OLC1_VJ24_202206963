@@ -9,6 +9,7 @@ import excepciones.ErrorS;
 import java.util.LinkedList;
 import simbolo.Arbol;
 import static simbolo.Arbol.global;
+import simbolo.RetornInter;
 import simbolo.TablaSimbolos;
 import simbolo.Tipo;
 import simbolo.TipoDato;
@@ -66,8 +67,10 @@ public class Else extends Instruccion{
         newTabla.setNombre("Else");
             for (var i: this.instruccion){
                 var resultado = i.interpretar(arbol, newTabla);
-                if (resultado instanceof Fin){
-                    Fin aux = (Fin)resultado;
+                if (resultado instanceof RetornInter){
+                    return resultado;
+                }
+                if (resultado instanceof Fin aux){
                     if(aux.isEstado() == true){
                         return resultado;
                     }

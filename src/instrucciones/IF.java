@@ -9,6 +9,7 @@ import excepciones.ErrorS;
 import java.util.LinkedList;
 import simbolo.Arbol;
 import static simbolo.Arbol.global;
+import simbolo.RetornInter;
 import simbolo.TablaSimbolos;
 import simbolo.Tipo;
 import simbolo.TipoDato;
@@ -36,6 +37,7 @@ public class IF extends Instruccion{
         this.condicion = condicion;
         this.instruccion = instruccion;
         this.elseC = elseC;
+        this.elseif = null;
     }
     
     
@@ -63,6 +65,9 @@ public class IF extends Instruccion{
         if ((boolean)cond){
             for (var i: this.instruccion){
                 var resultado = i.interpretar(arbol, newTabla);
+                if (resultado instanceof RetornInter){
+                    return resultado;
+                }
                 if (resultado instanceof Fin){
                     Fin aux = (Fin)resultado;
                     if(aux.isEstado() == true){
@@ -74,9 +79,31 @@ public class IF extends Instruccion{
             }
         }else{
             if (elseif != null){
-                elseif.interpretar(arbol, tabla);
+                var resultado = elseif.interpretar(arbol, tabla);
+                if (resultado instanceof RetornInter){
+                    return resultado;
+                }
+                if (resultado instanceof Fin){
+                    Fin aux = (Fin)resultado;
+                    if(aux.isEstado() == true){
+                        return resultado;
+                    }
+                    
+                    return resultado;
+                }
             }else if (elseC != null){
-                elseC.interpretar(arbol, tabla);
+                var resultado = elseC.interpretar(arbol, tabla);
+                if (resultado instanceof RetornInter){
+                    return resultado;
+                }
+                if (resultado instanceof Fin){
+                    Fin aux = (Fin)resultado;
+                    if(aux.isEstado() == true){
+                        return resultado;
+                    }
+                    
+                    return resultado;
+                }
             }
         }
         global.add(newTabla);

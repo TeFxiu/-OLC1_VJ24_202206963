@@ -27,25 +27,41 @@ public class Vector extends Instruccion{
     public int subIndice;
     public TipoEDD edd;
 
-    public Vector(TipoEDD edd,TipoMutable mutabilidad, String identificador, LinkedList<Instruccion> valores, Tipo tipo, int linea, int columna) {
+    public Vector(TipoMutable mutabilidad, String identificador, Object vector2d, TipoEDD edd, Tipo tipo, int linea, int columna) {
         super(tipo, linea, columna);
         this.mutabilidad = mutabilidad;
         this.identificador = identificador;
-        this.valores = valores;
+        if (vector2d instanceof LinkedList){
+            if (TipoEDD.VECTOR2D == edd){
+                this.vector2d = (LinkedList<LinkedList>)vector2d;
+            }
+            else if (TipoEDD.VECTOR == edd){
+                var lista = (LinkedList<LinkedList>)vector2d;
+                if (lista.size() == 1){
+                    var vals = lista.getFirst();
+                    this.valores = (LinkedList<Instruccion>)vals;
+                }
+            }
+        }
         this.edd = edd;
     }
-
-    public Vector(TipoMutable mutabilidad, String identificador, LinkedList<LinkedList> vector2d, TipoEDD edd, Tipo tipo, int linea, int columna) {
-        super(tipo, linea, columna);
-        this.mutabilidad = mutabilidad;
-        this.identificador = identificador;
-        this.vector2d = vector2d;
-        this.edd = edd;
+    
+    public Object comprobarLista(){
+        if (valores == null && edd == TipoEDD.VECTOR){
+            return new ErrorS("Semantico", "La estructura de la declaracion no es correcta para una estructura de datos", this.linea, this.columna);
+        }else if (vector2d == null && edd == TipoEDD.VECTOR2D){
+            return new ErrorS("Semantico", "La estructura de la declaracion no es correcta para una estructura de datos", this.linea, this.columna);
+        }
+        return null;
     }
     
 
     @Override
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
+        var valor = comprobarLista();
+        if (valor instanceof ErrorS){
+            return valor;
+        }
         if (TipoEDD.VECTOR == edd){
             for (var i: valores){
                 var result = i.interpretar(arbol, tabla);
@@ -59,6 +75,7 @@ public class Vector extends Instruccion{
             }
             valores = valores.reversed();
             Simbolo declaracion = new Simbolo(edd,this.tipo, mutabilidad, identificador ,valores, this.linea, this.columna, indice);
+            declaracion.setIndiceMax(indice);
             tabla.setVariable(declaracion);
         }else{
             var primero = this.interpretar(arbol, tabla, vector2d.getLast());
@@ -66,6 +83,7 @@ public class Vector extends Instruccion{
                 return primero;
             }
             indice++;
+            vector2d.set(vector2d.size()-indice, (LinkedList<Instruccion>)primero);
             for(var i: vector2d){
                 if (indice == vector2d.size()){
                     continue;
@@ -75,9 +93,12 @@ public class Vector extends Instruccion{
                     return lista;
                 }
                 indice++;
+                vector2d.set(vector2d.size()-indice, (LinkedList<Instruccion>)lista);
             }
             vector2d = vector2d.reversed();
             Simbolo declaracion = new Simbolo(edd,this.tipo, mutabilidad, identificador ,vector2d, this.linea, this.columna, indice);
+            declaracion.setIndiceMax(indice);
+            declaracion.setSubMax(subIndice);
             tabla.setVariable(declaracion);
         }
         return null;
@@ -108,10 +129,10 @@ public class Vector extends Instruccion{
                     return new ErrorS("SEMANTICO", "El tipo de dato dentro del vector no es compatible con el vector", this.linea, this.columna);
                 }
             }
-            instru = instru.reversed();
         }else{
             return new ErrorS("Semantico", "Los vectores no tienen las mismas dimensiones", this.linea, this.columna);
         }
+        instru = instru.reversed();
         return instru;
     }
     

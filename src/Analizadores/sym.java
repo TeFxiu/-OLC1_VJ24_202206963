@@ -14,6 +14,7 @@ public class sym {
   public static final int BRACKETS = 54;
   public static final int CHAR = 37;
   public static final int CONST = 11;
+  public static final int APEL = 60;
   public static final int IGUALACION = 23;
   public static final int FORC = 44;
   public static final int IMPRIMIR = 9;
@@ -39,7 +40,10 @@ public class sym {
   public static final int INCREMENTO = 33;
   public static final int IF = 40;
   public static final int UMENOS = 18;
+  public static final int RETORNO = 63;
+  public static final int LISTA = 57;
   public static final int ID = 7;
+  public static final int DOTT = 59;
   public static final int BOOLEAN = 38;
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
@@ -51,18 +55,22 @@ public class sym {
   public static final int MENOS = 17;
   public static final int MENOR = 27;
   public static final int PAR_C = 15;
+  public static final int START = 62;
   public static final int PAR_A = 14;
   public static final int TVOID = 56;
   public static final int BRACKET_C = 53;
   public static final int BRACKET_A = 52;
+  public static final int NUEVO = 58;
   public static final int MAYOR = 28;
   public static final int POTENCIA = 21;
   public static final int FLECHA = 50;
+  public static final int REST = 61;
   public static final int ELSE = 41;
   public static final int DEFAULT = 49;
   public static final int MAYOR_IGUAL = 25;
   public static final int STRING = 39;
   public static final int MENOR_IGUAL = 26;
+  public static final int STRUCT = 64;
   public static final int VAR = 10;
   public static final int MAS = 16;
   public static final String[] terminalNames = new String[] {
@@ -122,7 +130,15 @@ public class sym {
   "BRACKET_C",
   "BRACKETS",
   "COMA",
-  "TVOID"
+  "TVOID",
+  "LISTA",
+  "NUEVO",
+  "DOTT",
+  "APEL",
+  "REST",
+  "START",
+  "RETORNO",
+  "STRUCT"
   };
 }
 

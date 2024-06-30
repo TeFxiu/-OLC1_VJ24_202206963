@@ -4,10 +4,16 @@ import Analizadores.parser;
 import Analizadores.scanner;
 import abstracto.Instruccion;
 import excepciones.ErrorS;
+import expresiones.AccesoVar;
+import expresiones.AccesoVec;
+import expresiones.RestList;
+import instrucciones.ApenList;
 import instrucciones.AsignacionVar;
 import instrucciones.AsignarVec;
 import instrucciones.Declaracion;
 import instrucciones.Metodo;
+import instrucciones.Start;
+import instrucciones.Struct;
 import instrucciones.Vector;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
@@ -325,8 +331,15 @@ public class NewJFrame extends javax.swing.JFrame {
                 if (a == null) {
                     continue;
                 }
+                if (a instanceof Metodo) {
+                    ast.addFunciones(a);
+                }else if (a instanceof Struct){
+                    ast.addStruct(a);
+                }
 
-                if (a instanceof Declaracion || a instanceof AsignacionVar) {
+                if (a instanceof Declaracion || a instanceof AsignacionVar || a instanceof Vector
+                        || a instanceof AsignarVec || a instanceof ApenList || a instanceof RestList
+                        || a instanceof AccesoVar || a instanceof AccesoVec) {
                     var res = a.interpretar(ast, tabla);
                     if (res instanceof ErrorS errores) {
                         lista.add(errores);
@@ -334,26 +347,27 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
 
             }
-            
-            
-            for (var a : ast.getInstrucciones()) {
-                if (a == null) {
+            for (var a : ast.getInstrucciones()){
+                if (a == null){
                     continue;
                 }
-
-                if (a instanceof Metodo) {
-                    ast.addFunciones(a);
+                if (a instanceof Struct){
+                    var result = a.interpretar(ast, tabla);
+                    if (result instanceof ErrorS errores){
+                        lista.add(errores);
+                    }
                 }
+            
             }
             
+            
             for (var a : ast.getInstrucciones()) {
-                if (a instanceof Metodo){
-                    ast.addFunciones(a);
-                }
                 
-                var res = a.interpretar(ast, tabla);
-                if (res instanceof ErrorS) {
-                    lista.add((ErrorS) res);
+                if (a instanceof Start){
+                    var res = a.interpretar(ast, tabla);
+                    if (res instanceof ErrorS) {
+                        lista.add((ErrorS) res);
+                    }
                 }
             }
             textareaSalida.setText(ast.getConsola());

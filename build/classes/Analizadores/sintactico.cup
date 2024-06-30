@@ -1,6 +1,9 @@
 package Analizadores;
 
+
 //importaciones
+import java.util.HashMap;
+import instrucciones.Start;
 import java_cup.runtime.Symbol;
 import abstracto.Instruccion;
 import simbolo.Tipo;
@@ -15,6 +18,8 @@ import instrucciones.WhileC;
 import instrucciones.Print;
 import instrucciones.AsignacionVar;
 import instrucciones.OperacionUnitaria;
+import instrucciones.List;
+import expresiones.RestList;
 
 import expresiones.Nativo;
 import expresiones.Aritmeticas;
@@ -36,6 +41,9 @@ import expresiones.AccesoVec;
 import instrucciones.Metodo;
 import instrucciones.AsignarVec;
 import simbolo.TipoEDD;
+import instrucciones.ApenList;
+import instrucciones.Retorno;
+import instrucciones.Struct;
 
 // parser
 parser code
@@ -81,6 +89,11 @@ terminal FIN, CONTINUAR;
 terminal DEFAULT, FLECHA, MATCH;
 terminal BRACKET_A, BRACKET_C, BRACKETS, COMA;
 terminal TVOID;
+terminal LISTA, NUEVO;
+terminal DOTT, APEL;
+terminal REST;
+terminal START, RETORNO;
+terminal STRUCT;
 
 //no terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -95,12 +108,20 @@ nonterminal Instruccion CWHILE, DOWHILE;
 nonterminal Instruccion FINB;
 nonterminal Instruccion CMATCH;
 nonterminal LinkedList<Caso> CASOS;
-nonterminal LinkedList<Caso> CASOSE;
-nonterminal LinkedList<Caso> CASOSD;
 nonterminal Instruccion VECTORES, ASIGNACIONV; 
 nonterminal LinkedList<Instruccion> VALORES, BRACK;
 nonterminal LinkedList<LinkedList> BRACK2D;
 nonterminal Instruccion METODO;
+nonterminal LinkedList<HashMap> PARAMETROS;
+nonterminal LinkedList<HashMap> LISTP;
+nonterminal Instruccion LIST;
+nonterminal Instruccion ANIADIR;
+nonterminal Instruccion SMAIN;
+nonterminal Instruccion LLAMADA;
+nonterminal LinkedList<Instruccion> PARLLAMADA;
+nonterminal Instruccion REGRESO;
+nonterminal Instruccion STR;
+nonterminal HashMap <String, String>LISTR;
 
 precedence left OR;
 precedence left AND;
@@ -121,60 +142,107 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {: RESULT = a; RESULT.add(b)
                 | INSTRUCCION:a                     {: RESULT = new LinkedList<>(); RESULT.add(a); :}
 ;
 
-INSTRUCCION ::=  IMPRESION:a        {:   RESULT = a;   :}
-                |DECLARACION:a      {:   RESULT = a;   :}
-                |ASIGNACION:a       {:   RESULT = a;   :}
-                |ASIGNACIONV:a      {: RESULT = a; :}
-                |OPERACIONU:a       {:   RESULT = a;   :}
-                |SENT_IF:a          {:   RESULT = a;   :}
-                |FORB:a             {: RESULT = a; :}
-                |CWHILE:a           {: RESULT = a; :}
-                |DOWHILE:a          {: RESULT = a; :}
-                |FINB:a             {: RESULT = a; :}
-                |CMATCH:a           {: RESULT = a; :}
-                |VECTORES:a         {: RESULT =a;  :}
-                |METODO:a           {: RESULT =a;:}
+INSTRUCCION ::=  IMPRESION:a        {:      RESULT = a;   :}
+                |DECLARACION:a      {:      RESULT = a;   :}
+                |ASIGNACION:a       {:      RESULT = a;   :}
+                |ASIGNACIONV:a      {:      RESULT = a; :}
+                |OPERACIONU:a       {:      RESULT = a;   :}
+                |SENT_IF:a          {:      RESULT = a;   :}
+                |FORB:a             {:      RESULT = a; :}
+                |CWHILE:a           {:      RESULT = a; :}
+                |DOWHILE:a          {:      RESULT = a; :}
+                |FINB:a             {:      RESULT = a; :}
+                |CMATCH:a           {:      RESULT = a; :}
+                |VECTORES:a         {:      RESULT =a;  :}
+                |METODO:a           {:      RESULT =a;:}
+                |ANIADIR:a          {:      RESULT =a;:}
+                |LIST:a             {:      RESULT =a; :}
+                |REGRESO:a          {:      RESULT =a; :}
+                |LLAMADA:a FINCADENA           {:   RESULT = a; :}
+                |STR:a                  {: RESULT =a; :}
+                |SMAIN:a            {:      RESULT =a; :}
                 | error FINCADENA
 ;
 
+STR ::= STRUCT LLAVE_A LISTR:a LLAVE_C ID:b FINCADENA   {: RESULT = new Struct(a, b, aleft, aright); :}
+;
 
-METODO ::= TIPO:a ID:b PAR_A PAR_C LLAVE_A INSTRUCCIONES:c LLAVE_C {:RESULT = new Metodo(b,c,new Tipo(a), aleft, aright ); :}
+LISTR ::= LISTR:a ID:b DOS_PUNTOS ID:c FINCADENA         {: RESULT =a; a.put(b.toLowerCase(), c.toLowerCase()); :}
+            |ID:a DOS_PUNTOS ID:b FINCADENA         {: RESULT = new HashMap<String, String>();
+                                                    RESULT.put(a.toLowerCase(), b.toLowerCase());  :}
+;
+
+METODO ::= TIPO:d ID:a PARAMETROS:b LLAVE_A INSTRUCCIONES:c LLAVE_C {: RESULT = new Metodo(a,b,c, new Tipo(d),aleft, aright); :}
+;
+
+PARAMETROS ::=  PAR_A PAR_C            {: RESULT = new LinkedList<HashMap>(); :}
+                |PAR_A LISTP:a PAR_C      {: RESULT =a;  :}
+;
+
+LISTP ::= LISTP:a COMA TIPO:b ID:c      {: RESULT =a; 
+                                        var hm2 = new HashMap<String, Object>(); 
+                                        hm2.put("id", c); 
+                                        hm2.put("tipo", new Tipo(b)); RESULT.add(hm2); :}
+        |TIPO:a ID:b                    {: RESULT = new LinkedList<HashMap>(); 
+                                        var hm = new HashMap<String, Object>(); 
+                                        hm.put("id", b); 
+                                        hm.put("tipo", new Tipo(a)); RESULT.add(hm);:}
+;
+
+SMAIN ::=   START LLAMADA:a FINCADENA           {: RESULT = a;:} 
+;
+
+LLAMADA ::=     ID:a PAR_A PARLLAMADA:b PAR_C      {: RESULT = new Start(a,b, aleft, aright);:}
+                |ID:a PAR_A PAR_C                  {: RESULT = new Start(a, new LinkedList<>(), aleft, aright); :}
+            
+;
+
+PARLLAMADA ::= PARLLAMADA:a COMA EXPRESION:b    {:RESULT = a; RESULT.add(b);:} 
+            |EXPRESION:a                        {: RESULT = new LinkedList<>(); RESULT.add(a);:}
+;
+
+
+REGRESO ::= RETORNO EXPRESION:a FINCADENA       {: RESULT = new Retorno(a, aleft,aright); :}
+            |RETORNO FINCADENA:a                  {: RESULT = new Retorno(null,aleft, aright ); :}
+;
+
+LIST ::= LISTA MENOR TIPO:a MAYOR ID:b IGUAL NUEVO LISTA PAR_A PAR_C FINCADENA          {: RESULT = new List(b, new Tipo(a), aleft,aright); :}
+;
+
+VECTORES ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c BRACKETS IGUAL BRACK2D:d FINCADENA    {: RESULT = new Vector(a, b, d,TipoEDD.VECTOR, new Tipo(c), aleft,aright); :}
+            |MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c BRACKETS BRACKETS IGUAL BRACKET_A BRACK2D:d BRACKET_C FINCADENA {: RESULT = new Vector(a, b, d,TipoEDD.VECTOR2D, new Tipo(c), aleft,aright); :}
+;
+
+ANIADIR ::= ID:a DOTT APEL PAR_A EXPRESION:b PAR_C FINCADENA    {: RESULT = new ApenList(a, b, aleft, aright);  :}
 ;
 
 ASIGNACIONV ::= ID:a BRACKET_A EXPRESION:b BRACKET_C IGUAL EXPRESION:c FINCADENA         {: RESULT = new AsignarVec(a,b,c,aleft,aright);:}
-;
-
-VALORES ::= EXPRESION:a COMA VALORES:b                {:  RESULT = b; RESULT.add(a);   :}
-            |EXPRESION:a                              {: RESULT = new LinkedList<>(); RESULT.add(a);  :}
-;
-
-BRACK ::= BRACKET_A VALORES:a BRACKET_C               {: RESULT = a; :}
+                |ID:a BRACKET_A EXPRESION:b BRACKET_C BRACKET_A EXPRESION:d BRACKET_C IGUAL EXPRESION:c FINCADENA         {: RESULT = new AsignarVec(a,b, d,c,aleft,aright);:}
+                |ID:a BRACKET_A EXPRESION:b BRACKET_C IGUAL BRACK2D:c FINCADENA         {: RESULT = new AsignarVec(a,b,c,aleft,aright);:}
 ;
 
 BRACK2D ::= BRACK:a COMA BRACK2D:b                      {: RESULT = b; RESULT.add(a); :}
-        |BRACK:a                                      {: RESULT =new LinkedList<>(); RESULT.add(a); :}
+        |BRACK:a                                        {: RESULT =new LinkedList<>(); RESULT.add(a); :}
 ;
 
-VECTORES ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c BRACKETS IGUAL BRACK:d FINCADENA    {: RESULT = new Vector(TipoEDD.VECTOR,a, b, d, new Tipo(c), aleft,aright); :}
-            |MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c BRACKETS BRACKETS IGUAL BRACKET_A BRACK2D:d BRACKET_C FINCADENA {: RESULT = new Vector(a, b, d,TipoEDD.VECTOR2D, new Tipo(c), aleft,aright); :}
+BRACK ::= BRACKET_A VALORES:a BRACKET_C                 {: RESULT = a; :}
 ;
+
+VALORES ::= EXPRESION:a COMA VALORES:b                  {:  RESULT = b; RESULT.add(a);   :}
+            |EXPRESION:a                                {: RESULT = new LinkedList<>(); RESULT.add(a);  :}
+;
+
 
 CMATCH::= MATCH EXPRESION:a LLAVE_A CASOS:b LLAVE_C                             {: RESULT = new Match(a,b,aleft,aright); :}
 ;
 
-CASOS ::= EXPRESION:a FLECHA LLAVE_A INSTRUCCIONES:b LLAVE_C CASOS:c            {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,b,aleft,aright)); RESULT.addAll(c); :}
-            |CASOSE:a                                                           {: RESULT =a; :}
-            |CASOSD:a                                                            {: RESULT =a; :}
-;
-
-CASOSD ::= DEFAULT FLECHA LLAVE_A INSTRUCCIONES:a LLAVE_C                        {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,aleft,aright)); :}
-;
-
-CASOSE::= EXPRESION:a FLECHA LLAVE_A INSTRUCCIONES:b LLAVE_C                    {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,b,aleft,aright)); :}
+CASOS ::=   EXPRESION:a FLECHA LLAVE_A INSTRUCCIONES:b LLAVE_C CASOS:c            {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,b,aleft,aright)); RESULT.addAll(c); :}
+            |EXPRESION:a FLECHA LLAVE_A INSTRUCCIONES:b LLAVE_C                    {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,b,aleft,aright)); :}
+            |DEFAULT FLECHA LLAVE_A INSTRUCCIONES:a LLAVE_C                        {: RESULT = new LinkedList<>(); RESULT.add(new Caso(a,aleft,aright)); :}
 ;
 
 FINB ::= FIN:a FINCADENA                        {: RESULT= new Fin(aleft,aright); :}
-            |CONTINUAR:a FINCADENA              {: RESULT = new Fin(true, aleft, aright);    :}
+            |CONTINUAR:a FINCADENA              {: RESULT = new Fin(true, aleft, aright);:}
 ;
 
 DOWHILE ::= DO_C LLAVE_A INSTRUCCIONES:a LLAVE_C WHILEC PAR_A EXPRESION:b PAR_C FINCADENA           {: RESULT = new Dow(a,b,aleft,aright); :}
@@ -187,7 +255,19 @@ FORB::= FORC PAR_A ASIG:a EXPRESION:b FINCADENA ACTU_FOR:c PAR_C LLAVE_A INSTRUC
 ;
 
 ASIG ::= ASIGNACION:a           {:RESULT = a;:}
-    |DECLARACION:a              {:RESULT = a; :}
+    |DECLARACION:a            {:RESULT = a; :}
+;
+
+ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA         {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
+            |ID:a IGUAL OPERACIONU:b                    {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
+;
+
+DECLARACION ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c IGUAL EXPRESION:d FINCADENA        {: RESULT =new Declaracion(true,a,b,d,new Tipo(c),aleft,aright); :}
+                |MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c FINCADENA                         {: RESULT = new Declaracion(false,a,b,new Tipo(c),aleft,aright); :}
+;  
+
+OPERACIONU ::= ID:a INCREMENTO FINCADENA                {: RESULT = new OperacionUnitaria(a,true,aleft,aright); :}
+                |ID:a DECREMENTO FINCADENA              {: RESULT = new OperacionUnitaria(a,false,aleft,aright); :}
 ;
 
 ACTU_FOR ::= ID:a IGUAL EXPRESION:b         {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
@@ -205,19 +285,6 @@ BUCLE_IF::= ELSE SENT_IF:a                                                      
 IMPRESION ::= IMPRIMIR PAR_A EXPRESION:a PAR_C FINCADENA                                {:   RESULT = new Print(a, aleft, aright);   :}
 ;
 
-DECLARACION ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c IGUAL EXPRESION:d FINCADENA        {: RESULT =new Declaracion(true,a,b,d,new Tipo(c),aleft,aright); :}
-                |MUTABILIDAD:a ID:b DOS_PUNTOS TIPO:c FINCADENA                         {: RESULT = new Declaracion(false,a,b,new Tipo(c),aleft,aright); :}
-;  
-
-ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA         {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
-            |ID:a IGUAL OPERACIONU:b                    {: RESULT = new AsignacionVar(a,b,aleft,aright);:}
-;
-
-OPERACIONU ::= ID:a INCREMENTO FINCADENA                {: RESULT = new OperacionUnitaria(a,true,aleft,aright); :}
-                |ID:a DECREMENTO FINCADENA              {: RESULT = new OperacionUnitaria(a,false,aleft,aright); :}
-;
-
-
 EXPRESION ::= NOT EXPRESION:a                           {:   RESULT = new Logicos(OperadoresLogicos.NOT , a, aleft, aright);   :}
             | EXPRESION:a XOR EXPRESION:b               {:   RESULT = new Logicos(a, b, OperadoresLogicos.XOR , aleft, aright);   :}
             | EXPRESION:a AND EXPRESION:b               {:   RESULT = new Logicos(a, b, OperadoresLogicos.AND , aleft, aright);   :}
@@ -234,17 +301,21 @@ EXPRESION ::= NOT EXPRESION:a                           {:   RESULT = new Logico
             | EXPRESION:a POTENCIA EXPRESION:b          {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);   :}
             | EXPRESION:a DIV EXPRESION:b               {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);   :}
             | EXPRESION:a MULT EXPRESION:b              {:   RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);   :}
-            | MENOS EXPRESION:a                         {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UMENOS
-            | PAR_A TIPO:a PAR_C EXPRESION:b            {: RESULT = new Casteo(a, b, aleft, aright); :}   %prec UMENOS         
-            | PAR_A EXPRESION:a PAR_C                   {: RESULT=a; :}
+            | MENOS EXPRESION:a                         {:   RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);   :} %prec UMENOS          
             | ENTERO:a                                  {:   RESULT = new Nativo(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright );   :}
             | DECIMAL:a                                 {:   RESULT = new Nativo(Double.parseDouble(a), new Tipo(TipoDato.DECIMAL), aleft, aright );   :}
             | CADENA:a                                  {:   RESULT = new Nativo(a, new Tipo(TipoDato.CADENA), aleft, aright );   :}
             | BOOL:a                                    {:   RESULT = new Nativo(Boolean.parseBoolean(a), new Tipo(TipoDato.BOOL), aleft, aright );   :}
-            | ID:a                                      {:   RESULT = new AccesoVar(a, aleft, aright );   :}
+            | LLAMADA:a                                 {:RESULT =a;:}
             | ID:a BRACKET_A EXPRESION:b BRACKET_C       {:   RESULT = new AccesoVec(a, b,aleft, aright );   :}
+            | ID:a BRACKET_A EXPRESION:b BRACKET_C BRACKET_A EXPRESION:c BRACKET_C       {:   RESULT = new AccesoVec(a, b,c, aleft, aright );   :}
+            | ID:a DOTT REST PAR_A EXPRESION:b PAR_C        {: RESULT = new RestList(a,b, aleft, aright);:}
             | CARACTER:a                                {:   RESULT = new Nativo(a, new Tipo(TipoDato.CARACTER), aleft, aright );   :}
+            | PAR_A TIPO:a PAR_C EXPRESION:b            {: RESULT = new Casteo(a, b, aleft, aright); :}   %prec UMENOS         
+            | PAR_A EXPRESION:a PAR_C                   {: RESULT=a; :}  
+            | ID:a                                      {:   RESULT = new AccesoVar(a, aleft, aright );   :}
 ;
+
 
 TIPO::= INT             {:  RESULT = TipoDato.ENTERO;  :}
         |DOUBLE         {:  RESULT = TipoDato.DECIMAL;  :}

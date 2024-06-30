@@ -8,6 +8,8 @@ import abstracto.Instruccion;
 import java.util.LinkedList;
 import excepciones.ErrorS;
 import instrucciones.Metodo;
+import instrucciones.Struct;
+import java.util.HashMap;
 
 /**
  *
@@ -20,6 +22,7 @@ public class Arbol {
     private TablaSimbolos tablaGlobal;
     private LinkedList<ErrorS> errores;
     private LinkedList<Instruccion> funciones;
+    private HashMap<String, Object> structs;
 
     public Arbol(LinkedList<Instruccion> instrucciones) {
         this.instrucciones = instrucciones;
@@ -28,6 +31,7 @@ public class Arbol {
         this.errores = new LinkedList<>();
         this.global = new LinkedList<>();
         this.funciones = new LinkedList<>();
+        this.structs = new HashMap<String, Object>();
     }
 
     public LinkedList<Instruccion> getFunciones() {
@@ -73,6 +77,24 @@ public class Arbol {
     
     public void Print(String valor){
         consola += valor + "\n";
+    }
+
+    public void addStruct(Instruccion struct){
+        var busqueda = (Struct) struct;
+        structs.put(busqueda.id.toLowerCase(), busqueda);
+    }
+
+    public HashMap<String, Object> getStructs() {
+        return structs;
+    }
+
+    public void setStructs(HashMap<String, Object> structs) {
+        this.structs = structs;
+    }
+    
+    
+    public Object getStruct(String id){
+        return structs.get(id.toLowerCase());
     }
     
     public void addFunciones(Instruccion funcion){

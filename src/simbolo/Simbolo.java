@@ -19,7 +19,9 @@ public class Simbolo {
     public int linea;
     public int columna;
     public int indiceMax;
+    public int subMax;
 
+    
     public Simbolo(Tipo tipo, TipoMutable mutabilidad, String id, int linea, int columna) {
         this.tipo = tipo;
         this.mutabilidad = mutabilidad;
@@ -49,6 +51,27 @@ public class Simbolo {
         this.indiceMax = indiceMax;
         this.edd = edd;
     }
+
+    public Simbolo(Tipo tipo, String id, Object valor, TipoEDD edd, int linea, int columna) {
+        this.tipo = tipo;
+        this.id = id;
+        this.valor = valor;
+        this.edd = edd;
+        this.linea = linea;
+        this.columna = columna;
+        this.mutabilidad = TipoMutable.NON;
+    }
+    
+    
+
+    public int getSubMax() {
+        return subMax;
+    }
+
+    public void setSubMax(int subMax) {
+        this.subMax = subMax;
+    }
+    
 
     public int getIndiceMax() {
         return indiceMax;
@@ -105,5 +128,14 @@ public class Simbolo {
     public void setValor(Object valor) {
         this.valor = valor;
     }
+
+    public TipoEDD getEdd() {
+        return edd;
+    }
+
+    public void setEdd(TipoEDD edd) {
+        this.edd = edd;
+    }
+    
     
 }

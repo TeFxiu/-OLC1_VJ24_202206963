@@ -9,6 +9,7 @@ import excepciones.ErrorS;
 import expresiones.Caso;
 import java.util.LinkedList;
 import simbolo.Arbol;
+import simbolo.RetornInter;
 import simbolo.TablaSimbolos;
 import simbolo.Tipo;
 import simbolo.TipoDato;
@@ -50,6 +51,9 @@ public class Match extends Instruccion{
                 }
                 if (eva.equals(evalua)){
                     var actual = i.interpretar(arbol, tabla);
+                    if (actual instanceof RetornInter){
+                    return actual;
+                    }
                     if (actual instanceof ErrorS|| actual instanceof Fin){
                         return actual;
                     }

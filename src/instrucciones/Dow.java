@@ -9,6 +9,7 @@ import excepciones.ErrorS;
 import java.util.LinkedList;
 import simbolo.Arbol;
 import static simbolo.Arbol.global;
+import simbolo.RetornInter;
 import simbolo.TablaSimbolos;
 import simbolo.Tipo;
 import simbolo.TipoDato;
@@ -34,6 +35,9 @@ public class Dow extends Instruccion {
         do{
             for(var i: instrucciones){
                 var result = i.interpretar(arbol, newTabla);
+                if (result instanceof RetornInter){
+                    return result;
+                }
                 if (result instanceof Fin){
                     Fin aux = (Fin)result;
                     if(aux.isEstado() == true){

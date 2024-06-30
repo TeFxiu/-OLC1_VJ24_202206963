@@ -3,36 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/abstracto/Instruccion.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/Tipo.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/Generador.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/parser.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/IF.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/WhileC.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Match.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/ForC.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Else.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Nativo.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/OperacionUnitaria.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Fin.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Casteo.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Dow.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/AccesoVar.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Interfaces/NewJFrame.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/excepciones/ErrorS.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/Simbolo.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Declaracion.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/AsignacionVar.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/Arbol.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Aritmeticas.java</file>
             <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/sintactico.cup</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Logicos.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Relacionales.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/expresiones/Caso.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/TablaSimbolos.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/TipoDato.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/scanner.java</file>
-            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Analizadores/lexico.jflex</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/Interfaces/NewJFrame.java</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/simbolo/Simbolo.java</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Struct.java</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/ApenList.java</file>
+            <file>file:/C:/Users/TeFxiu/Documents/NetBeansProjects/Prueba-Interfaz%20Compi1/src/instrucciones/Declaracion.java</file>
         </group>
     </open-files>
 </project-private>

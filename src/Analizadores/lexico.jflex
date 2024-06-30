@@ -94,15 +94,31 @@ DOS_PUNTOS = ":"
 BRACKETS = "[]"
 BRACKET_A = "["
 BRACKET_C = "]"
+START = "start_with"
 
 COMA = ","
 TVOID = "void"
+
+LISTA = "list"
+NUEVO = "new"
+APEL = "append"
+DOTT = "."
+REST = "remove"
+RETORNO = "return"
+STRUCT = "struct"
 
 %%
 
 
 <YYINITIAL> {COMENTARIOS_MULTILINEA} {}
 <YYINITIAL> {COMENTARIOS_LINEA} {}
+<YYINITIAL> {STRUCT}                          {return new Symbol(sym.STRUCT, yyline, yycolumn,yytext());}
+<YYINITIAL> {RETORNO}                          {return new Symbol(sym.RETORNO, yyline, yycolumn,yytext());}
+<YYINITIAL> {START}                          {return new Symbol(sym.START, yyline, yycolumn,yytext());}
+<YYINITIAL> {APEL}                          {return new Symbol(sym.APEL, yyline, yycolumn,yytext());}
+<YYINITIAL> {REST}                          {return new Symbol(sym.REST, yyline, yycolumn,yytext());}
+<YYINITIAL> {NUEVO}                          {return new Symbol(sym.NUEVO, yyline, yycolumn,yytext());}
+<YYINITIAL> {LISTA}                          {return new Symbol(sym.LISTA, yyline, yycolumn,yytext());}
 <YYINITIAL> {TVOID}                          {return new Symbol(sym.TVOID, yyline, yycolumn,yytext());}
 <YYINITIAL> {COMA}                          {return new Symbol(sym.COMA, yyline, yycolumn,yytext());}
 <YYINITIAL> {BRACKETS}                      {return new Symbol(sym.BRACKETS, yyline, yycolumn,yytext());}
@@ -168,6 +184,7 @@ TVOID = "void"
 <YYINITIAL> {PAR_C}             {return new Symbol(sym.PAR_C, yyline, yycolumn,yytext());}
 <YYINITIAL> {BLANCOS}           {}
 <YYINITIAL> {COMILLA_SIMPLE}    {return new Symbol(DESCARTE, yyline, yycolumn, yytext());}
+<YYINITIAL> {DOTT}    {return new Symbol(sym.DOTT, yyline, yycolumn, yytext());}
 
 <YYINITIAL> . {
         listaErrores.add(new ErrorS("Error lexico", "Caracter " + yytext() + "no pertenece al lenguaje", yyline, yycolumn));

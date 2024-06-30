@@ -16,5 +16,6 @@ public enum TipoDato {
     VOID,
     CADENA,
     DEFAULT,
-    CASO
+    CASO,
+    STRUCT
 }

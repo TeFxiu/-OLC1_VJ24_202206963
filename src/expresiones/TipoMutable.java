@@ -10,5 +10,6 @@ package expresiones;
  */
 public enum TipoMutable {
     VAR,
-    CONST
+    CONST,
+    NON
 }
